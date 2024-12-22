@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %}
+
+{% block head_title %}Transact{% endblock %}
+
+{% load static%}
+
+{% block content %}
+<br>
+<h1 class="font-mono font-bold text-3xl text-center pb-5 pt-10">Transact</h1>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-center" style="transition: transform 0.3s;">
+                <div class="card-body">
+                    <img src="{% static 'img/payment.png' %}" class="card-img-top" alt="Payment">
+                    <h5 class="card-title mt-3">Payment</h5>
+                    <p class="card-text">Make a payment to your account or another recipient.</p>
+                    <a href="{% url 'transactions:payment_form' %}" class="btn btn-primary">Go to Payment</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center" style="transition: transform 0.3s;">
+                <div class="card-body">
+                    <img src="{% static 'img/transference.png' %}" class="card-img-top" alt="Transfer">
+                    <h5 class="card-title mt-3">Transfer</h5>
+                    <p class="card-text">Transfer money from one account to other.</p>
+                    <a href="{% url 'transactions:transfer_form' %}" class="btn btn-primary">Go to Transfer</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center" style="transition: transform 0.3s;">
+                <div class="card-body">
+                    <img src="{% static 'img/deposit.png' %}" class="card-img-top" alt="Deposit">
+                    <h5 class="card-title mt-3">Deposit</h5>
+                    <p class="card-text">Deposit funds into your account quickly and easily.</p>
+                    <a href="{% url 'transactions:deposit_money' %}" class="btn btn-primary">Go to Deposit</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center" style="transition: transform 0.3s;">
+                <div class="card-body">
+                    <img src="{% static 'img/withdraw.png' %}" class="card-img-top" alt="Withdraw">
+                    <h5 class="card-title mt-3">Withdraw</h5>
+                    <p class="card-text">Withdraw funds from your account safely and securely.</p>
+                    <a href="{% url 'transactions:withdraw_money' %}" class="btn btn-primary">Go to Withdraw</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<style>
+    .card:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}

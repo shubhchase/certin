@@ -1,0 +1,193 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block head_title %}Payment{% endblock %}
+{% block content %}
+<style>
+    .background {
+        background: linear-gradient(to bottom right,#FFFFFF, #5899E2, #5899E2 , lightblue);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        backdrop-filter: blur(10px); /* Adjust blur strength as needed */
+    }
+    .contain {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; /* Align items to the top */
+        width: 60%; /* Adjust as needed */
+        max-width: 800px; /* Adjust max-width as needed */
+        padding: 40px;
+    }
+    .form-contain {
+        flex: 1;
+        background-color: rgba(255, 255, 255, 0.2); /* Adjust opacity as needed */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-right: 20px; /* Adjust spacing between form and QR code */
+    }
+    .form-title {
+        font-family: 'Monospace', sans-serif;
+        font-weight: bold;
+        font-size: 1.875rem; /* 30px */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .form-card {
+        width: 100%;
+    }
+    .form-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color:#273746;
+    }
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+        font-size: 1rem;
+        background-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(5px);
+    }
+    .submit-button {
+        background-color: #4299e1;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+    }
+    .submit-button:hover {
+        background-color: #2b6cb0;
+    }
+    .image-contain {
+        width: 200px; /* Adjust width of the image contain */
+        position: relative;
+        margin-top: 20px;
+    }
+    .toggle-image {
+        max-width: 100%;
+        display: none; /* Initially hide the image */
+    }
+    .btn-toggle-image {
+        background-color: #6cb2eb; /* Adjust button color */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+    }
+    .btn-toggle-image:hover {
+        background-color: #5899e2; /* Darker shade on hover */
+    }
+</style>
+
+<div class="background">
+    <div class="contain">
+        <div class="form-contain">
+            <h1 class="form-title">Payment</h1>
+            <form method="post" class="form-card">
+                {% csrf_token %}
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="mb-4">
+                    {% comment %} <h5>Recipient Information</h5> {% endcomment %}
+                    <label for="id_recipient_name" class="form-label">Recipient Name:</label>
+                    {{ form.recipient_name }}
+                    {% if form.recipient_name.errors %}
+                        <div class="error-message">
+                            {% for error in form.recipient_name.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="id_recipient_account" class="form-label">Recipient Account Number:</label>
+                    {{ form.recipient_account }}
+                    {% if form.recipient_account.errors %}
+                        <div class="error-message">
+                            {% for error in form.recipient_account.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    {% comment %} <h5>Payment Details</h5> {% endcomment %}
+                    <label for="id_amount" class="form-label">Payment Amount:</label>
+                    {{ form.amount }}
+                    {% if form.amount.errors %}
+                        <div class="error-message">
+                            {% for error in form.amount.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="id_payment_method" class="form-label">Payment Method:</label>
+                    {{ form.payment_method }}
+                    {% if form.payment_method.errors %}
+                        <div class="error-message">
+                            {% for error in form.payment_method.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="id_description" class="form-label">Description:</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <div class="error-message">
+                            {% for error in form.description.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="flex items-center justify-center">
+                    <button type="submit" class="submit-button">Submit Payment</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="image-contain">
+            <button class="btn btn-secondary btn-toggle-image" id="toggleImageBtn">Click to Pay Using QR</button>
+            <img src="{% static 'img/payment_qr.png' %}" alt="Generate QR" class="toggle-image img-fluid" id="toggleImage">
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('toggleImageBtn').addEventListener('click', function() {
+        var img = document.getElementById('toggleImage');
+        if (img.style.display === 'none' || img.style.display === '') {
+            img.style.display = 'block';
+            this.textContent = 'Remove QR';
+        } else {
+            img.style.display = 'none';
+            this.textContent = 'Click to Pay Using QR';
+        }
+    });
+</script>
+{% endblock %}

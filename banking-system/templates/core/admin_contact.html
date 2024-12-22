@@ -1,0 +1,56 @@
+{% extends "core/adminpanel.html" %}
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-12 grid-margin">
+          <div class="d-flex justify-content-between flex-wrap">
+            <div class="me-md-3 me-xl-5">
+              <h2>Contact Messages</h2>
+              <p class="mb-md-0">List of all contact messages</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Messages</h4>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Subject</th>
+                      <th>Message</th>
+                      <th>Received At</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for message in contact_messages %}
+                    <tr>
+                      <td>{{ message.name }}</td>
+                      <td>{{ message.email }}</td>
+                      <td>{{ message.subject }}</td>
+                      <td>{{ message.message }}</td>
+                      <td>{{ message.created_at }}</td>
+                      <td>
+                        <form method="post" action="{% url 'core:delete_contact' message.id %}" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                      </td>
+                    </tr>
+                    
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

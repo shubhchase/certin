@@ -1,0 +1,87 @@
+{% extends "core/adminpanel.html" %}
+{% block content %}
+<div class="container mt-5">
+    <br>
+    <div class="row">
+        {% for user in users %}
+            <div class="col-md-4 mb-4">
+                <div class="card border-grey shadow-sm">
+                    <div class="card-header bg-grey text-white d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Account Number: {{ user.account_no }}</h5>
+                        <i class="mdi mdi-account-circle text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                <i class="mdi mdi-account text-primary" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0"><strong>First Name:</strong> {{ user.user.first_name }}</p>
+                                <p class="mb-0"><strong>Last Name:</strong> {{ user.user.last_name }}</p>
+                                <p class="mb-0"><strong>Email:</strong> {{ user.user.email }}</p>
+                                <p class="mb-0"><strong>Account Type:</strong> {{ user.account_type }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                <i class="mdi mdi-gender-male text-success" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0"><strong>Gender:</strong> {{ user.get_gender_display }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                <i class="mdi mdi-calendar text-warning" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0"><strong>Birth Date:</strong> {{ user.birth_date }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                <i class="mdi mdi-cash text-info" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0"><strong>Balance:</strong> Rs. {{ user.balance }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                <i class="mdi mdi-calendar-clock text-secondary" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0"><strong>Interest Start Date:</strong> {{ user.interest_start_date }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                <i class="mdi mdi-calendar-plus text-danger" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0"><strong>Initial Deposit Date:</strong> {{ user.initial_deposit_date }}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                <i class="mdi mdi-home-city text-primary" style="font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <p class="mb-0"><strong>Street Address:</strong> {{ user.user.address.street_address }}</p>
+                                <p class="mb-0"><strong>City:</strong> {{ user.user.address.city }}</p>
+                                <p class="mb-0"><strong>Postal Code:</strong> {{ user.user.address.postal_code }}</p>
+                                <p class="mb-0"><strong>Country:</strong> {{ user.user.address.country }}</p>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <a href="{% url 'accounts:delete_account' user.id|add:1 %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this account?');">
+                                Delete Account
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

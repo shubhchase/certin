@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="text-center p-5 shadow rounded" style="background-color: #ffffff; max-width: 500px;">
+        <h2 class="mb-4" style="color: #2b6cb0; font-family: 'Arial', sans-serif;">Request Submitted Successfully</h2>
+        <p style="font-size: 1.1rem; color: #555555;">
+            Your request has been submitted successfully. We will get back to you soon.
+        </p>
+        <div class="mt-4">
+            <a href="{% url 'transactions:check_status' %}" class="btn btn-primary" style="padding: 10px 20px; border-radius: 5px;">
+                Check service status
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

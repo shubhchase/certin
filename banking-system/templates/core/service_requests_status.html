@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Your Service Requests</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Purpose</th>
+                <th>Company Address</th>
+                <th>Service Type</th>
+                <th>Status</th>
+                <th>Submitted At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in service_requests %}
+            <tr>
+                <td>{{ request.name }}</td>
+                <td>{{ request.email }}</td>
+                <td>{{ request.purpose }}</td>
+                <td>{{ request.company_address }}</td>
+                <td>{{ request.get_service_type_display }}</td>
+                <td>
+                    {% if request.status == 'pending' %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% elif request.status == 'accepted' %}
+                        <span class="badge bg-success text-light">Accepted</span>
+                    {% elif request.status == 'rejected' %}
+                        <span class="badge bg-danger text-light">Rejected</span>
+                    {% endif %}
+                </td>
+                <td>{{ request.created_at|date:"F j, Y, g:i a" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">You have no service requests.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

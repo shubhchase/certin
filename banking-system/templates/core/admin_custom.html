@@ -1,0 +1,122 @@
+{% extends 'core/adminpanel.html' %}
+
+{% block content %}
+{% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="container-fluid mt-5">
+    <br>
+    <h2 class="mb-4 text-center">FD and RD Applications</h2>
+
+    <!-- FD Applications -->
+    <div class="card mb-5">
+        <div class="card-header bg-grey text-white">
+            <h4 class="card-title">FD Applications</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>User</th>
+                            <th>Amount</th>
+                            <th>Tenure</th>
+                            <th>Interest Rate</th>
+                            <th>Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for application in fd_applications %}
+                        <tr>
+                            <td>{{ application.user.first_name }}</td>
+                            <td>{{ application.amount }}</td>
+                            <td>{{ application.tenure }} months</td>
+                            <td>{{ application.interest_rate }}%</td>
+                            <td>
+                                <span class="badge {% if application.status == 'Approved' %}badge-success{% elif application.status == 'Rejected' %}badge-danger{% else %}badge-warning{% endif %}">
+                                    {{ application.status }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <form action="{% url 'transactions:approve_fd_application' application.id %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                </form>
+                                <form action="{% url 'transactions:reject_fd_application' application.id %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-warning btn-sm">Reject</button>
+                                </form>
+                                <form action="{% url 'transactions:delete_fd_application' application.id %}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this application?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- RD Applications -->
+    <div class="card mb-5">
+        <div class="card-header bg-grey text-white">
+            <h4 class="card-title">RD Applications</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>User</th>
+                            <th>Amount</th>
+                            <th>Monthly Amount</th>
+                            <th>Tenure</th>
+                            <th>Interest Rate</th>
+                            <th>Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for application in rd_applications %}
+                        <tr>
+                            <td>{{ application.user.first_name }}</td>
+                            <td>{{ application.amount }}</td>
+                            <td>{{ application.monthly_amount }}</td>
+                            <td>{{ application.tenure }} months</td>
+                            <td>{{ application.interest_rate }}%</td>
+                            <td>
+                                <span class="badge {% if application.status == 'Approved' %}badge-success{% elif application.status == 'Rejected' %}badge-danger{% else %}badge-warning{% endif %}">
+                                    {{ application.status }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <form action="{% url 'transactions:approve_rd_application' application.id %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                </form>
+                                <form action="{% url 'transactions:reject_rd_application' application.id %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-warning btn-sm">Reject</button>
+                                </form>
+                                <form action="{% url 'transactions:delete_rd_application' application.id %}" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this application?');">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

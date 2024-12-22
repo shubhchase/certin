@@ -1,0 +1,57 @@
+{% extends "core/adminpanel.html" %}
+{% block content %}
+{% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="container mt-5"><br>
+    <h2 class="mb-4 text-center">Manage Service Requests</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Purpose</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in service_requests %}
+                <tr>
+                    <td>{{ request.name }}</td>
+                    <td>{{ request.email }}</td>
+                    <td>{{ request.purpose }}</td>
+                    <td>
+                        <span class="badge {% if request.get_status_display == 'Accepted' %}badge-success{% elif request.get_status_display == 'Rejected' %}badge-danger{% else %}badge-warning{% endif %}">
+                            {{ request.get_status_display }}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url 'core:change_request_status' request.pk 'accepted' %}" class="btn btn-sm btn-success mr-2">Accept</a>
+                        <a href="{% url 'core:change_request_status' request.pk 'rejected' %}" class="btn btn-sm btn-warning">Reject</a>
+                        <button class="btn btn-sm btn-danger" onclick="confirmDelete('{% url 'core:delete_service_request' request.id %}')">Delete</button>
+
+                    </td>
+                    
+                        <!-- Delete button -->
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div><br>
+</div>
+<script>
+    function confirmDelete(url) {
+        if (confirm("Are you sure you want to delete this service request?")) {
+            window.location.href = url;
+        }
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "core/adminpanel.html" %}
+{% block content %}
+
+<h2>Blog Posts</h2>
+<a href="{% url 'core:add_blog_post' %}" class="btn btn-primary">+ Add New Post</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Date Posted</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in blog_posts %}
+        <tr>
+            <td>{{ post.title }}</td>
+            <td>{{ post.author }}</td>
+            <td>{{ post.date_posted }}</td>
+            <td>
+                <a href="{% url 'core:edit_blog_post' post.id %}" class="btn btn-warning btn-sm">Edit</a>
+                <form method="post" action="{% url 'core:delete_blog_post' post.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

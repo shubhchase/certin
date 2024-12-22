@@ -1,0 +1,231 @@
+{% extends 'core/base.html' %}
+
+{% block head_title %}User Registration{% endblock %}
+
+{% load static %}
+{% block content %}
+<style>
+    .background {
+        background: linear-gradient(to bottom right, #5899E2, #5899E2,#5899E2,   #b8faf6 , lightblue);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        backdrop-filter: blur(10px); /* Adjust blur strength as needed */
+    }
+    .form-container {
+        background-color: rgba(255, 255, 255, 0.2); /* Adjust opacity as needed */
+        max-width: 800px; /* Wider form container for registration */
+        padding: 40px;
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 40px; /* Adjust top margin for space below header */
+        margin-bottom: 40px; /* Adjust bottom margin for space above footer */
+    }
+    .form-title {
+        font-family: 'Monospace', sans-serif;
+        font-weight: bold;
+        font-size: 1.875rem; /* 30px */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .form-card {
+        margin-top: 20px;
+    }
+    .form-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color:#273746;
+    }
+    .form-control {
+        width: 100%; /* Adjust width as needed */
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Transparent border */
+        border-radius: 5px;
+        font-size: 1rem; /* 16px */
+        background-color: rgba(255, 255, 255, 0.3); /* Transparent background */
+        backdrop-filter: blur(5px); /* Optional: Apply blur effect to input field */
+    }
+    .submit-button {
+        background-color: #4299e1; /* Blue color */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem; /* 16px */
+        transition: background-color 0.3s ease;
+    }
+    .submit-button:hover {
+        background-color: #2b6cb0; /* Darker blue on hover */
+    }
+</style>
+
+<div class="background">
+    <div class="form-container">
+        <h1 class="form-title">Register</h1>
+        <form method="post" class="form-card">
+            {% csrf_token %}
+            
+            {% if registration_form.non_field_errors %}
+                {% for error in registration_form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Error!</strong> {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ registration_form.first_name.id_for_label }}" class="form-label">First Name</label>
+                    <input type="text" name="{{ registration_form.first_name.name }}" id="{{ registration_form.first_name.id_for_label }}" class="form-control">
+                    {% if registration_form.first_name.errors %}
+                        {% for error in registration_form.first_name.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ registration_form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                    <input type="text" name="{{ registration_form.last_name.name }}" id="{{ registration_form.last_name.id_for_label }}" class="form-control">
+                    {% if registration_form.last_name.errors %}
+                        {% for error in registration_form.last_name.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ registration_form.email.id_for_label }}" class="form-label">Email</label>
+                    <input type="email" name="{{ registration_form.email.name }}" id="{{ registration_form.email.id_for_label }}" class="form-control">
+                    {% if registration_form.email.errors %}
+                        {% for error in registration_form.email.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ registration_form.account_type.id_for_label }}" class="form-label">Account Type</label>
+                    <select name="{{ registration_form.account_type.name }}" id="{{ registration_form.account_type.id_for_label }}" class="form-control">
+                        {% for choice in registration_form.account_type.field.choices %}
+                            <option value="{{ choice.0 }}" {% if choice.0 == registration_form.account_type.value %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if registration_form.account_type.errors %}
+                        {% for error in registration_form.account_type.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ registration_form.gender.id_for_label }}" class="form-label">Gender</label>
+                    <select name="{{ registration_form.gender.name }}" id="{{ registration_form.gender.id_for_label }}" class="form-control">
+                        {% for choice in registration_form.gender.field.choices %}
+                            <option value="{{ choice.0 }}" {% if choice.0 == registration_form.gender.value %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if registration_form.gender.errors %}
+                        {% for error in registration_form.gender.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ registration_form.birth_date.id_for_label }}" class="form-label">Birth Date</label>
+                    <input type="date" name="{{ registration_form.birth_date.name }}" id="{{ registration_form.birth_date.id_for_label }}" class="form-control">
+                    {% if registration_form.birth_date.errors %}
+                        {% for error in registration_form.birth_date.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ registration_form.password1.id_for_label }}" class="form-label">Password</label>
+                    <input type="password" name="{{ registration_form.password1.name }}" id="{{ registration_form.password1.id_for_label }}" class="form-control">
+                    {% if registration_form.password1.errors %}
+                        {% for error in registration_form.password1.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ registration_form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+                    <input type="password" name="{{ registration_form.password2.name }}" id="{{ registration_form.password2.id_for_label }}" class="form-control">
+                    {% if registration_form.password2.errors %}
+                        {% for error in registration_form.password2.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ address_form.street_address.id_for_label }}" class="form-label">Street Address</label>
+                    <input type="text" name="{{ address_form.street_address.name }}" id="{{ address_form.street_address.id_for_label }}" class="form-control">
+                    {% if address_form.street_address.errors %}
+                        {% for error in address_form.street_address.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ address_form.city.id_for_label }}" class="form-label">City</label>
+                    <input type="text" name="{{ address_form.city.name }}" id="{{ address_form.city.id_for_label }}" class="form-control">
+                    {% if address_form.city.errors %}
+                        {% for error in address_form.city.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="{{ address_form.postal_code.id_for_label }}" class="form-label">Postal Code</label>
+                    <input type="text" name="{{ address_form.postal_code.name }}" id="{{ address_form.postal_code.id_for_label }}" class="form-control">
+                    {% if address_form.postal_code.errors %}
+                        {% for error in address_form.postal_code.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ address_form.country.id_for_label }}" class="form-label">Country</label>
+                    <input type="text" name="{{ address_form.country.name }}" id="{{ address_form.country.id_for_label }}" class="form-control">
+                    {% if address_form.country.errors %}
+                        {% for error in address_form.country.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                
+            </div>
+
+            <div class="text-center">
+                <button class="submit-button" type="submit">Register</button>
+                <a href="{% url 'accounts:update_password' %}">Forgot Password?</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

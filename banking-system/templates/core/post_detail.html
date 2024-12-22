@@ -1,0 +1,90 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<title>{{ post.title }}</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-md-8">
+                <div class="blog-item bg-light rounded p-4 mb-4" style="background-image: url('{% static 'img/bg.png' %}');">
+                    <h1 style="background-color: #f8f9fa; border-radius: 10px; padding: 10px;">{{ post.title }}</h1>
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid mb-4 rounded shadow-lg p-3">
+                    <p>{{ post.content }}</p>
+                    <p>Author: {{ post.author }}</p>
+                    <p>Date Posted: {{ post.date_posted }}</p>
+
+                    <!-- Additional Content -->
+                    {% block additional_content %}
+                    <div class="additional-content mt-4">
+                        
+                    </div>
+                    {% endblock %}
+
+                    <!-- Likes section -->
+                    <h3>Likes:</h3>
+                    <p>Total Likes: {{ post.likes.count }}</p>
+                    {% if request.user.is_authenticated %}
+                        {% if request.user in post.likes.all %}
+                            <form action="{% url 'core:like_post' pk=post.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Unlike</button>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'core:like_post' pk=post.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link p-0"><i class="fas fa-thumbs-up"></i>Like</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Comments section -->
+                    <h3>Comments:</h3>
+                    {% for comment in post.comments.all %}
+                    <div class="comment-box rounded p-3 mb-3">
+                        <p class="mb-0">{{ comment.content }}</p>
+                    </div>
+                        <p>By: {{ comment.user.first_name }}</p>
+                        {% comment %} <p>Date Posted: {{ comment.date_posted }}</p> {% endcomment %}
+                        <hr>
+                    {% empty %}
+                        <p>No comments yet.</p>
+                    {% endfor %}
+
+                    <!-- Comment form -->
+                    {% if request.user.is_authenticated %}
+                    <form action="{% url 'core:comment_post' pk=post.pk %}" method="post" class="comment-form">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-comment-dots"></i> Submit Comment</button>
+                    </form>
+                {% else %}
+                    <p>Login to leave a comment.</p>
+                {% endif %}
+                
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-md-4">
+                <div class="sidebar bg-light rounded p-4 mb-4">
+                    <h2 class="mb-3">Other Blogs</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'core:post_detail' pk=1 %}">International Yoga Day</a></li>
+                       <br> <li><a href="{% url 'core:post_detail' pk=2 %}">Tariff Hike By Service Provider</a></li>
+                        <br><li><a href="{% url 'core:post_detail' pk=3 %}">New SBI Chairman</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .comment-box {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd; 
+        }
+        
+    </style>
+{% endblock %}

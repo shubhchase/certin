@@ -1,0 +1,183 @@
+{% extends 'core/base.html' %}
+{% block head_title %}Profile - Finovo Bank{% endblock %}
+{% load static %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+<div class="container p-4 bg-white shadow rounded">
+    
+    <h4 class="font-weight-bold mb-4">Account settings</h4>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-3">
+                <div class="sticky-top" style="top: 5rem;">
+                    <div class="bg-light rounded p-3">
+                        <a href="#account-general" class="d-block py-2 px-3 text-dark font-weight-bold">General</a>
+                        <a href="#account-change-password" class="d-block py-2 px-3 text-dark font-weight-bold">Change password</a>
+                        {% comment %} <a href="#account-info" class="d-block py-2 px-3 text-dark font-weight-bold">Info</a>
+                        <a href="#account-social-links" class="d-block py-2 px-3 text-dark font-weight-bold">Social links</a>
+                        <a href="#account-connections" class="d-block py-2 px-3 text-dark font-weight-bold">Connections</a>
+                        <a href="#account-notifications" class="d-block py-2 px-3 text-dark font-weight-bold">Notifications</a> {% endcomment %}
+                        <a href="#address" class="d-block py-2 px-3 text-dark font-weight-bold">Address</a>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="col-md-9">
+                <div id="account-general" class="py-4">
+                    <h4 class="font-weight-bold mb-4">General</h4>
+                    <div class="d-flex align-items-center mb-4">
+                        {% if user.account.gender == 'M' %}
+                            <img src="{% static 'img/man.png' %}" alt="Male Avatar" class="rounded-circle w-25 h-25 shadow">
+                        {% elif user.account.gender == 'F' %}
+                            <img src="{% static 'img/woman.png' %}" alt="Female Avatar" class="rounded-circle w-25 h-25 shadow">
+                        {% else %}
+                            <img src="{% static 'img/man.png' %}" alt="Default Avatar" class="rounded-circle w-25 h-25 shadow">
+                        {% endif %}
+
+                        {% comment %} <div class="ml-4">
+                            <label class="text-primary font-weight-bold">
+                                Upload new photo
+                                {{ profile_form.image }}
+                            </label>
+                            <button type="button" class="btn btn-outline-secondary">Reset</button>
+                            <p class="text-muted mt-1">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                        </div> {% endcomment %}
+                    </div>
+
+                    <hr class="mb-4">
+
+                    <div class="bg-light p-4 rounded">
+                        {% comment %} <div class="mb-4">
+                            <label class="font-weight-bold">Username</label>
+                            <input type="text" class="form-control-plaintext bg-light" value="{{ user.username }}" readonly>
+                        </div> {% endcomment %}
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Account Number</label>
+                            <input type="text" class="form-control-plaintext bg-light" value="{{ user.account.account_no }}" readonly>
+                        </div>
+                        <div class="mb-4">
+                            <label class="font-weight-bold">First Name</label>
+                            <input type="text" class="form-control-plaintext bg-light" value="{{ user.first_name }}" readonly>
+                        </div>
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Last Name</label>
+                            <input type="text" class="form-control-plaintext bg-light" value="{{ user.last_name }}" readonly>
+                        </div>
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Email</label>
+                            <input type="text" class="form-control-plaintext bg-light" value="{{ user.email }}" readonly>
+                        <a href="{% url 'accounts:update_email' %}">Change Email</a></div>
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Account Type:</label>
+                            
+                            {{ user.account.account_type }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Gender:</label>
+                            {{ user.account.gender }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Birth Date:</label>
+                            {{ user.account.birth_date }}
+                        </div>
+                    </div>
+                </div>
+
+                
+                {% comment %} <div id="account-info" class="py-4">
+                    <h4 class="font-weight-bold mb-4">Info</h4>
+                    <div class="bg-light p-4 rounded">
+                        {{ profile_form.info }}
+                    </div>
+                </div>
+
+                <div id="account-social-links" class="py-4">
+                    <h4 class="font-weight-bold mb-4">Social Links</h4>
+                    <div class="bg-light p-4 rounded">
+                        {{ profile_form.social }}
+                    </div>
+                </div>
+
+                <div id="account-connections" class="py-4">
+                    <h4 class="font-weight-bold mb-4">Connections</h4>
+                    <div class="bg-light p-4 rounded">
+                        {{ profile_form.connection }}
+                    </div>
+                </div>
+
+                <div id="account-notifications" class="py-4">
+                    <h4 class="font-weight-bold mb-4">Notifications</h4>
+                    <div class="bg-light p-4 rounded">
+                        {{ profile_form.notification }}
+                    </div>
+                </div> {% endcomment %}
+                
+                <div id="address" class="py-4">
+                    <h4 class="font-weight-bold mb-4">Address:</h4>
+                    <div class="bg-light p-4 rounded">
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Street Address:</label>
+                            {{ user.address.street_address }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="font-weight-bold">City:</label>
+                            {{ user.address.city }}
+                        </div>
+                         {% comment %} <div class="mb-4">
+                            <label class="font-weight-bold">State</label>
+                            {{ address_form.state }}
+                        </div>  {% endcomment %}
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Postal Code:</label>
+                            {{ user.address.postal_code }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="font-weight-bold">Country:</label>
+                            {{ user.address.country }}
+                        </div>
+                    </div>
+                </div>
+                <div id="account-change-password" class="py-4">
+                    <h4 class="font-weight-bold mb-4">Change Password</h4>
+                    <div class="bg-light p-4 rounded">
+                        <div class="mb-4">
+                            <label for="current_password" class="font-weight-bold">Current Password</label><br>
+                            {{ password_change_form.current_password }}
+                            {% if password_change_form.errors.current_password %}
+                                <p class="text-danger">{{ password_change_form.errors.current_password }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            <label for="new_password1" class="font-weight-bold">New Password</label><br>
+                            {{ password_change_form.new_password1 }}
+                            {% if password_change_form.errors.new_password1 %}
+                                <p class="text-danger">{{ password_change_form.errors.new_password1 }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            <label for="new_password2" class="font-weight-bold">Confirm New Password</label><br>
+                            {{ password_change_form.new_password2 }}
+                            {% if password_change_form.errors.new_password2 %}
+                                <p class="text-danger">{{ password_change_form.errors.new_password2 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="py-4">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

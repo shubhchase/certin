@@ -1,0 +1,104 @@
+<!-- star_user.html -->
+
+{% extends 'core/adminpanel.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .form-container {
+        background-color: #FAF6F6; /* White background for the form */
+        max-width: 500px;
+        font-weight: bold;
+        padding: 40px;
+        width: 100%;
+        color: #273746;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 40px auto; /* Center the form with vertical margin */
+    }
+    .form-title {
+        font-family: 'Monospace', sans-serif;
+        font-weight: bold;
+        font-size: 1.875rem; /* 30px */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .form-card {
+        margin-top: 20px;
+    }
+    .form-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    .form-control {
+        width: 100%; /* Full width */
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da; /* Light border */
+        border-radius: 5px;
+        font-size: 1rem; /* 16px */
+        background-color: #ffffff; /* White background */
+    }
+    .error-message {
+        color: red;
+        font-size: 0.875rem; /* 14px */
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
+    .submit-button {
+        background-color: #4299e1; /* Blue color */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem; /* 16px */
+        transition: background-color 0.3s ease;
+        width: 100%; /* Full width button */
+    }
+    .submit-button:hover {
+        background-color: #2b6cb0; /* Darker blue on hover */
+    }
+</style>
+
+<div class="container">
+    <br>
+    <div class="form-container">
+        <h2 class="form-title">Star User</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <form method="post" class="form-card" novalidate>
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="{{ form.user.id_for_label }}" class="form-label">Select User</label>
+                {{ form.user }}
+                {% if form.user.errors %}
+                    <div class="error-message">
+                        {% for error in form.user.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group mb-3">
+                <label for="{{ form.amount.id_for_label }}" class="form-label">Amount to Add</label>
+                {{ form.amount }}
+                {% if form.amount.errors %}
+                    <div class="error-message">
+                        {% for error in form.amount.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+    </div>
+    <br>
+</div>
+
+{% endblock %}

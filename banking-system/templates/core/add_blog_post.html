@@ -1,0 +1,45 @@
+{% extends 'core/adminpanel.html' %}
+{% block content %}
+<div class="container mt-4">
+    <br>
+    <h2 class="mb-4">Add Blog Post</h2>
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_title">Title</label>
+                    <input type="text" name="title" id="id_title" class="form-control" value="{{ form.title.value }}">
+                    {% if form.title.errors %}
+                        <div class="text-danger">{{ form.title.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_content">Content</label>
+                    <textarea name="content" id="id_content" class="form-control">{{ form.content.value }}</textarea>
+                    {% if form.content.errors %}
+                        <div class="text-danger">{{ form.content.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_image">Image</label>
+                    <input type="file" name="image" id="id_image" class="form-control">
+                    {% if form.image.errors %}
+                        <div class="text-danger">{{ form.image.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_author">Author</label>
+                    <input type="text" name="author" id="id_author" class="form-control" value="{{ form.author.value }}">
+                    {% if form.author.errors %}
+                        <div class="text-danger">{{ form.author.errors }}</div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{% url 'core:admin_blog_posts' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+{% endblock %}

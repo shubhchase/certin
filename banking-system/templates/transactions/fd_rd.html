@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% block head_title %}Services{% endblock %}
+
+{% load static%}
+
+{% block content %}
+<br>
+<h1 class="font-mono font-bold text-3xl text-center pb-5 pt-10">Services</h1>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card text-center" style="transition: transform 0.3s;">
+                <div class="card-body">
+                    <img src="{% static 'img/fd.png' %}" class="card-img-top" alt="Payment">
+                    <h5 class="card-title mt-3">Fixed Deposit</h5>
+                    <p class="card-text">Handle Fixed Deposit (FD) applications easily.</p>
+                    <a href="{% url 'transactions:apply_fd' %}" class="btn btn-primary">Click to Apply</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center" style="transition: transform 0.3s;">
+                <div class="card-body">
+                    <img src="{% static 'img/rd.png' %}" class="card-img-top" alt="Transfer">
+                    <h5 class="card-title mt-3">Recurring Deposit</h5>
+                    <p class="card-text">Manage Recurring Deposit (RD) applications smoothly</p>
+                    <a href="{% url 'transactions:apply_rd' %}" class="btn btn-primary">Click to Apply</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center" style="transition: transform 0.3s;">
+                <div class="card-body">
+                    <img src="{% static 'img/status.png' %}" class="card-img-top" alt="Transfer">
+                    <h5 class="card-title mt-3">Check Status</h5>
+                    <p class="card-text">Check Status of Several Services</p>
+                    <a href="{% url 'transactions:check_status' %}" class="btn btn-primary">Click to Check</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+<style>
+    .card:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}

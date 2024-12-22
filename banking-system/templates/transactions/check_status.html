@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% block head_title %}Service Status{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Service Status</h1>
+    <p class="lead">Welcome to the Service Status Dashboard. Here you can check the status of various services </p>
+
+    <!-- Dropdown for service options -->
+    <div class="dropdown mb-4">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            Check Services Options
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="{% url 'transactions:user_fd_applications' %}"><i class="fas fa-search"></i> Check FD Status</a></li>
+            <li><a class="dropdown-item" href="{% url 'transactions:user_rd_applications' %}"><i class="fas fa-search"></i> Check RD Status</a></li>
+            <li><a class="dropdown-item" href="{% url 'core:service_requests_status' %}"><i class="fas fa-search"></i> Check Service Status</a></li>
+            <li><a class="dropdown-item" href="{% url 'core:user_notifications' %}"><i class="fas fa-star"></i> Star Customer</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'transactions:transact' %}"><i class="fas fa-exchange-alt"></i> Transact</a></li>
+        </ul>
+    </div>
+
+    <!-- User Information -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>User Information</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+
+
+    <!-- Quick Links -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Quick Links</h5>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{% url 'transactions:deposit_money' %}"><i class="fas fa-money-bill-wave"></i> Deposit Money</a></li>
+                <li class="list-group-item"><a href="{% url 'transactions:withdraw_money' %}"><i class="fas fa-money-bill-wave-alt"></i> Withdraw Money</a></li>
+                <li class="list-group-item"><a href="{% url 'accounts:update_email' %}"><i class="fas fa-envelope"></i> Update Email</a></li>
+                <li class="list-group-item"><a href="{% url 'accounts:update_password' %}"><i class="fas fa-key"></i> Update Password</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="content-area">
+        <!-- Content from the selected option will be loaded here -->
+    </div>
+</div>
+{% endblock %}

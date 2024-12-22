@@ -1,0 +1,209 @@
+{% extends 'core/base.html' %}
+
+{% block head_title %}{{ title }}{% endblock %}
+
+{% load static %}
+{% block content %}
+<style>
+    .background {
+        background: linear-gradient(to bottom right, #5899E2, #5899E2, #FFFFFF, lightblue);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        backdrop-filter: blur(10px); /* Adjust blur strength as needed */
+    }
+    .form-container {
+        background-color: rgba(255, 255, 255, 0.2); /* Adjust opacity as needed */
+        max-width: 500px;
+        padding: 40px;
+        width: 400px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 40px; /* Adjust top margin for space below header */
+        margin-bottom: 40px; /* Adjust bottom margin for space above footer */
+    }
+    .form-title {
+        font-family: 'Monospace', sans-serif;
+        font-weight: bold;
+        font-size: 1.875rem; /* 30px */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .form-card {
+        margin-top: 20px;
+    }
+    .form-label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color:#273746;
+    }
+    .form-control {
+        width: 100%; /* Adjust width as needed */
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.3); /* Transparent border */
+        border-radius: 5px;
+        font-size: 1rem; /* 16px */
+        background-color: rgba(255, 255, 255, 0.3); /* Transparent background */
+        backdrop-filter: blur(5px); /* Optional: Apply blur effect to input field */
+    }
+    .submit-button {
+        background-color: #4299e1; /* Blue color */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem; /* 16px */
+        transition: background-color 0.3s ease;
+    }
+    .submit-button:hover {
+        background-color: #2b6cb0; /* Darker blue on hover */
+    }
+</style>
+
+<div class="background">
+    <div class="form-container">
+        <h1 class="form-title">{{ title }}</h1>
+        <form method="post" class="form-card">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if form_type == 'deposit' %}
+                <div class="mb-4">
+                    <label for="{{ form.amount.id_for_label }}" class="form-label">Amount:</label>
+                    <input type="number" name="{{ form.amount.name }}" id="{{ form.amount.id_for_label }}" class="form-control">
+                    {% if form.amount.errors %}
+                        {% for error in form.amount.errors %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+            {% elif form_type == 'withdraw' %}
+                <div class="mb-4">
+                    <label for="{{ form.amount.id_for_label }}" class="form-label">Amount:</label>
+                    <input type="number" name="{{ form.amount.name }}" id="{{ form.amount.id_for_label }}" class="form-control">
+                    {% if form.amount.errors %}
+                        {% for error in form.amount.errors %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+            {% elif form_type == 'payment' %}
+            <div class="mb-4">
+                <label for="{{ form.recipient_name.id_for_label }}" class="form-label">{{ form.recipient_name.label }}</label>
+                {{ form.recipient_name }}
+                {% if form.recipient_name.errors %}
+                  {% for error in form.recipient_name.errors %}
+                    <p class="error-message">{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+        
+              <div class="mb-4">
+                <label for="{{ form.recipient_account.id_for_label }}" class="form-label">{{ form.recipient_account.label }}</label>
+                {{ form.recipient_account }}
+                {% if form.recipient_account.errors %}
+                  {% for error in form.recipient_account.errors %}
+                    <p class="error-message">{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+        
+              <div class="mb-4">
+                <label for="{{ form.amount.id_for_label }}" class="form-label">{{ form.amount.label }}</label>
+                {{ form.amount }}
+                {% if form.amount.errors %}
+                  {% for error in form.amount.errors %}
+                    <p class="error-message">{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+        
+              <div class="mb-4">
+                <label for="{{ form.payment_method.id_for_label }}" class="form-label">{{ form.payment_method.label }}</label>
+                <select name="{{ form.payment_method.name }}" id="{{ form.payment_method.id_for_label }}" class="form-control">
+                  {% for value, label in form.payment_method.field.choices %}
+                    <option value="{{ value }}" {% if form.payment_method.value == value %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+                {% if form.payment_method.errors %}
+                  {% for error in form.payment_method.errors %}
+                    <p class="error-message">{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+        
+              <div class="mb-4">
+                <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                  {% for error in form.description.errors %}
+                    <p class="error-message">{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+
+            {% elif form_type == 'transfer' %}
+                <div class="mb-4">
+                    <label for="{{ form.source_account.id_for_label }}" class="form-label">Source Account:</label>
+                    <input type="text" name="{{ form.source_account.name }}" id="{{ form.source_account.id_for_label }}" class="form-control">
+                    {% if form.source_account.errors %}
+                        {% for error in form.source_account.errors %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.destination_account.id_for_label }}" class="form-label">Destination Account:</label>
+                    <input type="text" name="{{ form.destination_account.name }}" id="{{ form.destination_account.id_for_label }}" class="form-control">
+                    {% if form.destination_account.errors %}
+                        {% for error in form.destination_account.errors %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.amount.id_for_label }}" class="form-label">Amount:</label>
+                    <input type="number" name="{{ form.amount.name }}" id="{{ form.amount.id_for_label }}" class="form-control">
+                    {% if form.amount.errors %}
+                        {% for error in form.amount.errors %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="{{ form.description.id_for_label }}" class="form-label">Description:</label>
+                    <textarea name="{{ form.description.name }}" id="{{ form.description.id_for_label }}" class="form-control"></textarea>
+                    {% if form.description.errors %}
+                        {% for error in form.description.errors %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+            {% endif %}
+
+            <div class="flex items-center justify-center">
+                <button class="submit-button" type="submit">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

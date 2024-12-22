@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+{% block head_title %}Fixed Deposit{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center font-monospace font-weight-bold mb-4"><b>Your FD Applications</b></h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Amount</th>
+                    <th>Tenure (months)</th>
+                    <th>Interest Rate (%)</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in fd_applications %}
+                <tr>
+                    <td>{{ application.amount }}</td>
+                    <td>{{ application.tenure }}</td>
+                    <td>{{ application.interest_rate }}</td>
+                    <td>{{ application.status }}</td>
+                    <td>{{ application.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid testimonial bg-light py-5">
+    <div class="container py-5">
+        <div class="row g-4 align-items-center">
+            <div class="col-xl-4 wow fadeInLeft" data-wow-delay="0.1s">
+                <div class="h-100 rounded">
+                    <h4 class="text-primary">Our Feedbacks </h4>
+                    <h1 class="display-4 mb-4">People are Talking</h1>
+                    <p class="mb-4">At Finovo Bank, we pride ourselves on our client satisfaction. Here's what our clients have to say about our exceptional services and innovative solutions.</p>
+                    <a class="btn btn-primary rounded-pill text-white py-3 px-5" href="#">Read All Reviews <i class="fas fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+            <div class="col-xl-8">
+                <div class="testimonial-carousel owl-carousel wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="testimonial-item bg-white rounded p-4 wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="d-flex">
+                            <div><i class="fas fa-quote-left fa-3x text-dark me-3"></i></div>
+                            <p class="mt-4">Finovo Bank exemplifies excellence in the financial sector. Their innovative solutions and unwavering commitment to customer service are truly commendable.
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <div class="my-auto text-end">
+                                <h5>Narendra Modi</h5>
+                                <p class="mb-0">PM of India</p>
+                            </div>
+                            <div class="bg-white rounded-circle ms-3">
+                              <img src="{% static 'img/testimonial1.jpeg' %}" class="rounded-circle p-2" style="width: 80px; height: 80px; border: 1px solid; border-color: var(--bs-primary);" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item bg-white rounded p-4 wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="d-flex">
+                            <div><i class="fas fa-quote-left fa-3x text-dark me-3"></i></div>
+                            <p class="mt-4">Finovo Bank has redefined banking with its exceptional customer service and innovative financial solutions. Their dedication to excellence makes them a leader in the industry.
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <div class="my-auto text-end">
+                                <h5>Kapil Dev</h5>
+                                <p class="mb-0">Former Cricket Captain</p>
+                            </div>
+                            <div class="bg-white rounded-circle ms-3">
+                              <img src="{% static 'img/testimonial2.jpeg' %}" class="rounded-circle p-2" style="width: 80px; height: 80px; border: 1px solid; border-color: var(--bs-primary);" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-item bg-white rounded p-4 wow fadeInUp" data-wow-delay="0.7s">
+                        <div class="d-flex">
+                            <div><i class="fas fa-quote-left fa-3x text-dark me-3"></i></div>
+                            <p class="mt-4">Finovo Bank's commitment to providing top-notch banking services is truly impressive. Their innovative approach and customer-first attitude set them apart.
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <div class="my-auto text-end">
+                                <h5>Rajinikanth</h5>
+                                <p class="mb-0">Thalaivar</p>
+                            </div>
+                            <div class="bg-white rounded-circle ms-3">
+                              <img src="{% static 'img/testimonial3.jpg' %}" class="rounded-circle p-2" style="width: 80px; height: 80px; border: 1px solid; border-color: var(--bs-primary);" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

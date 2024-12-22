@@ -1,0 +1,89 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<br>
+<div class="row g-4 justify-content-center">
+    {% for post in blog_posts %}
+    <div class="col-md-6 col-lg-4 col-xl-3 wow fadeInUp" data-wow-delay="0.3s">
+        <div class="blog-item bg-light rounded p-4 mb-4" style="background-image: url('{% static 'img/bg.png' %}');">
+            <h4 class="text-primary mb-2"><a href="{% url 'core:post_detail' pk=post.pk %}">{{ post.title }}</a></h4>
+            <div class="d-flex justify-content-between">
+                <p class="mb-0"><span class="text-dark fw-bold">On</span> {{ post.date_posted }}</p>
+                <p class="mb-0"><span class="text-dark fw-bold">By</span> {{ post.author }}</p>
+            </div>
+            <div class="project-img mt-3">
+                <a href="{% url 'core:post_detail' pk=post.pk %}"><img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid rounded border" style="transition: border-color 0.3s ease;"></a>
+            </div>
+            <div class="my-4">
+                <p>{{ post.content }}</p>
+            </div>
+            <!-- Likes section -->
+            <h3>Likes:</h3>
+            <p>Total Likes: {{ post.likes.count }}</p>
+            {% if request.user.is_authenticated %}
+                {% if request.user in post.likes.all %}
+                    <form action="{% url 'core:like_post' pk=post.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link p-0"><i class="fas fa-thumbs-down"></i> Unlike</button>
+                    </form>
+                {% else %}
+                    <form action="{% url 'core:like_post' pk=post.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link p-0"><i class="fas fa-thumbs-up"></i> Like</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+            <!-- Comments section -->
+            <h3>Comments:</h3>
+            {% for comment in post.comments.all %}
+                <p>{{ comment.content }}</p>
+                <p>By: {{ comment.user.first_name }}</p>
+                {% comment %} <p>Date Posted: {{ comment.date_posted }}</p> {% endcomment %}
+                <hr>
+            {% empty %}
+                <p>No comments yet.</p>
+            {% endfor %}
+            <!-- Comment form -->
+            {% if request.user.is_authenticated %}
+                <form action="{% url 'core:comment_post' pk=post.pk %}" method="post">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <button type="submit" class="btn btn-link p-0"><i class="fas fa-comment-dots"></i> Submit Comment</button>
+                </form>
+            {% else %}
+                <p>Login to leave a comment.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .blog-item {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .blog-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-item .project-img img {
+        border: 1px solid transparent; /* Ensure a border is initially set */
+    }
+
+    .blog-item:hover .project-img img {
+        border-color: green; /* Change the border color on hover */
+    }
+
+    .btn-link {
+        color: #4299e1;
+        text-decoration: none;
+    }
+
+    .btn-link:hover {
+        color: #2b6cb0;
+    }
+</style>
+{% endblock %}
